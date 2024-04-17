@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "78599419588",
+    "project_id": "stopandshop-61e59",
+    "storage_bucket": "stopandshop-61e59.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78599419588:android:dd3790bcfd62d121983b91",
+        "android_client_info": {
+          "package_name": "com.example.stopandshop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsf4PNiqPut_icirLAOgKLEpUYnWO5KL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78599419588:android:0d6ed3d2265de27a983b91",
+        "android_client_info": {
+          "package_name": "com.example.stopshop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsf4PNiqPut_icirLAOgKLEpUYnWO5KL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
