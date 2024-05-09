@@ -45,7 +45,7 @@ class _SignUpState extends State<SignUp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Stay on track with Suffa bus tracking',
+              'STOP AND SHOP',
               style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -66,7 +66,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 labelText: 'Enter Your Full Name',
                 filled: true, //<-- SEE HERE
-                fillColor: const Color.fromRGBO(238, 238, 238, 1)),
+                fillColor: Color.fromARGB(255, 255, 255, 255)),
           ),
         ),
         Container(
@@ -79,12 +79,11 @@ class _SignUpState extends State<SignUp> {
                 ),
                 labelText: 'Enter Your Email',
                 filled: true, //<-- SEE HERE
-                fillColor: const Color.fromRGBO(238, 238, 238, 1)),
+                fillColor: Color.fromARGB(255, 255, 255, 255)),
           ),
         ),
         Container(
           padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(),
           child: TextFormField(
             controller: passwordController,
             obscureText: true,
@@ -103,7 +102,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 labelText: 'Enter Password',
                 filled: true, //<-- SEE HERE
-                fillColor: const Color.fromRGBO(238, 238, 238, 1)),
+                fillColor: Color.fromARGB(255, 255, 255, 255)),
           ),
         ),
 
