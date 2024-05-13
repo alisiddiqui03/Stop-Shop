@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stopshop/Authentication/forget_password.dart';
 import 'package:stopshop/Authentication/signup_screen.dart';
-import 'package:stopshop/home_screen.dart';
+import 'package:stopshop/Screens/home_screen.dart';
 
 // Login Function
 void loginUser(BuildContext context, String email, String password) async {
@@ -58,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           const SizedBox(height: 110),
@@ -86,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   labelText: 'Enter Your Email',
                   filled: true, //<-- SEE HERE
-                  fillColor: const Color.fromRGBO(238, 238, 238, 1)),
+                  fillColor: Color.fromARGB(255, 255, 255, 255)),
             ),
           ),
           const SizedBox(height: 15),
@@ -102,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   labelText: 'Enter Password',
                   filled: true, //<-- SEE HERE
-                  fillColor: const Color.fromRGBO(238, 238, 238, 1)),
+                  fillColor: Color.fromARGB(255, 255, 255, 255)),
             ),
           ),
           const SizedBox(height: 15),
@@ -122,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text(
                   'Forget Password?',
                   style: TextStyle(
-                      color: Color.fromARGB(255, 24, 181, 0),
+                      color: Color.fromRGBO(36, 34, 921, 1),
                       fontWeight: FontWeight.w500),
                 ),
               ),
@@ -139,14 +140,14 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(50.0),
                     // side: BorderSide(color: Colors.red)
                   ),
-                  backgroundColor: const Color.fromARGB(255, 24, 181, 0),
+                  backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
                 ),
                 child: const Text(
                   'Login',
                   style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 20,
-                      color: Color.fromARGB(255, 0, 0, 0)),
+                      color: Color.fromRGBO(232, 234, 246, 1)),
                 ),
                 onPressed: () {
                   String email = emailController.text.trim();
@@ -164,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                   'Sign up',
                   style: TextStyle(
                       fontSize: 18,
-                      color: Color.fromARGB(255, 24, 181, 0),
+                      color: Color.fromRGBO(36, 34, 921, 1),
                       fontWeight: FontWeight.w600),
                 ),
                 onPressed: () {

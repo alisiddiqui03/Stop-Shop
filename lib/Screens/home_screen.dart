@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:stopshop/Screens/checkout_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -41,12 +43,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
+            iconTheme: IconThemeData(color: Color.fromRGBO(232, 234, 246, 1)),
             centerTitle: true,
-            backgroundColor: const Color.fromARGB(255, 24, 181, 0),
+            backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
             title: const Text('STOP & SHOP',
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Color.fromRGBO(232, 234, 246, 1),
                     fontSize: 22,
                     fontWeight: FontWeight.bold)),
           ),
@@ -157,6 +161,7 @@ class _ScanProductState extends State<ScanProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -181,14 +186,14 @@ class _ScanProductState extends State<ScanProduct> {
                         borderRadius: BorderRadius.circular(50.0),
                         // side: BorderSide(color: Colors.red)
                       ),
-                      backgroundColor: const Color.fromARGB(255, 24, 181, 0),
+                      backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
                     ),
                     child: const Text(
                       'CLICK TO SCAN',
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 18,
-                          color: Color.fromARGB(255, 0, 0, 0)),
+                          color: Color.fromRGBO(232, 234, 246, 1)),
                     ),
                     onPressed: () async {
                       var res = await Navigator.push(
@@ -216,6 +221,20 @@ class _ScanProductState extends State<ScanProduct> {
   }
 }
 
+class Product {
+  String name;
+  double price;
+  String description;
+  int quantity;
+
+  Product({
+    required this.name,
+    required this.price,
+    required this.description,
+    this.quantity = 0,
+  });
+}
+
 class Cart extends StatefulWidget {
   const Cart({super.key});
 
@@ -224,130 +243,186 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-  List<Map<String, dynamic>> productDetails = [
-    {
-      "name": "Product 1",
-      "price": 10.99,
-      "description": "Description of Product 1"
-    },
-    {
-      "name": "Product 2",
-      "price": 20.99,
-      "description": "Description of Product 2"
-    },
-    {
-      "name": "Product 1",
-      "price": 10.99,
-      "description": "Description of Product 1"
-    },
-    {
-      "name": "Product 2",
-      "price": 20.99,
-      "description": "Description of Product 2"
-    },
-    {
-      "name": "Product 1",
-      "price": 10.99,
-      "description": "Description of Product 1"
-    },
-    {
-      "name": "Product 2",
-      "price": 20.99,
-      "description": "Description of Product 2"
-    },
-    {
-      "name": "Product 1",
-      "price": 10.99,
-      "description": "Description of Product 1"
-    },
-    {
-      "name": "Product 2",
-      "price": 20.99,
-      "description": "Description of Product 2"
-    },
-    // Add more product details as needed
+  List<Product> products = [
+    Product(
+      name: "Product 1",
+      price: 10.99,
+      description: "Description of Product 1",
+    ),
+    Product(
+      name: "Product 2",
+      price: 20.99,
+      description: "Description of Product 2",
+    ),
+    Product(
+      name: "Product 1",
+      price: 10.99,
+      description: "Description of Product 1",
+    ),
+    Product(
+      name: "Product 2",
+      price: 20.99,
+      description: "Description of Product 2",
+    ),
   ];
+
+  double getTotalCost() {
+    double total = 0.0;
+    for (var product in products) {
+      total += product.price * product.quantity;
+    }
+    return total;
+  }
 
   void _deleteProduct(int index) {
     setState(() {
-      productDetails.removeAt(index);
+      products.removeAt(index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text("SHOP")),
-      ),
-      body: ListView.builder(
-        itemCount: productDetails.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 90,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(232, 234, 246, 1),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Row(children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          productDetails[index]["name"],
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromRGBO(36, 34, 921, 1)),
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+        body: ListView.builder(
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 90,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(232, 234, 246, 1),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Row(children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            products[index].name,
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(36, 34, 921, 1)),
+                          ),
+                          Text(products[index].description,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color.fromRGBO(36, 34, 921, 1))),
+                          Text("Price: \Rs${products[index].price}".toString(),
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  color: Color.fromRGBO(36, 34, 921, 1))),
+                        ],
+                      ),
+                      Spacer(),
+                      CounterApp(
+                        initialValue: products[index].quantity,
+                        onValueChanged: (value) {
+                          setState(() {
+                            products[index].quantity = value;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 15),
+                      GestureDetector(
+                        onTap: () => _deleteProduct(index),
+                        child: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                          size: 25,
                         ),
-                        Text(productDetails[index]["description"],
-                            style: TextStyle(
-                                fontSize: 16,
-                                color: Color.fromRGBO(36, 34, 921, 1))),
-                        Text(
-                            "Price: \Rs${productDetails[index]["price"]}"
-                                .toString(),
-                            style: TextStyle(
-                                fontSize: 17,
-                                color: Color.fromRGBO(36, 34, 921, 1))),
-                      ],
+                      ),
+                    ])),
+              ),
+            );
+          },
+        ),
+        bottomNavigationBar: Row(
+          children: [
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(36, 34, 921, 1),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Center(
+                  child: Text(
+                    'Total: \$${getTotalCost().toStringAsFixed(2)}',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Color.fromRGBO(232, 234, 246, 1),
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+            Spacer(),
+            Expanded(
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        // side: BorderSide(color: Colors.red)
+                      ),
+                      backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
                     ),
-                    Spacer(),
-                    CounterApp(),
-                    SizedBox(width: 15),
-                    GestureDetector(
-                      onTap: () => _deleteProduct(index),
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                        size: 25,
+                    child: const Center(
+                      child: Text(
+                        'Checkout',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 17,
+                            color: Color.fromRGBO(232, 234, 246, 1)),
                       ),
                     ),
-                  ])),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const Checkout()));
+                    },
+                  )),
             ),
-          );
-        },
-      ),
-    );
+          ],
+        ));
   }
 }
 
 class CounterApp extends StatefulWidget {
+  final int initialValue;
+  final ValueChanged<int> onValueChanged;
+
+  const CounterApp({
+    Key? key,
+    required this.initialValue,
+    required this.onValueChanged,
+  }) : super(key: key);
+
   @override
   _CounterAppState createState() => _CounterAppState();
 }
 
 class _CounterAppState extends State<CounterApp> {
-  int _counter = 0;
+  late int _counter;
+
+  @override
+  void initState() {
+    super.initState();
+    _counter = widget.initialValue;
+  }
 
   void _incrementCounter() {
     setState(() {
       _counter++;
+      widget.onValueChanged(_counter);
     });
   }
 
@@ -355,6 +430,7 @@ class _CounterAppState extends State<CounterApp> {
     setState(() {
       if (_counter > 0) {
         _counter--;
+        widget.onValueChanged(_counter);
       }
     });
   }
@@ -375,7 +451,9 @@ class _CounterAppState extends State<CounterApp> {
           style: TextStyle(fontSize: 20.0),
         ),
         GestureDetector(
-            onTap: _incrementCounter, child: Icon(Icons.add, size: 22)),
+          onTap: _incrementCounter,
+          child: Icon(Icons.add, size: 22),
+        ),
       ],
     );
   }
