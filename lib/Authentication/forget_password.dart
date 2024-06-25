@@ -17,7 +17,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
         body: Center(
             child: SingleChildScrollView(
                 child: Column(
@@ -102,7 +102,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           borderRadius: BorderRadius.circular(50.0),
                           // side: BorderSide(color: Colors.red)
                         ),
-                        backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
+                        backgroundColor: Color.fromRGBO(2, 27, 60, 1),
                       ),
                       child: const Text(
                         'Submit',

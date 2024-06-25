@@ -43,14 +43,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
           appBar: AppBar(
             iconTheme: IconThemeData(color: Color.fromRGBO(232, 234, 246, 1)),
             centerTitle: true,
-            backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
+            backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
             title: const Text('STOP & SHOP',
                 style: TextStyle(
-                    color: Color.fromRGBO(232, 234, 246, 1),
+                    color: Color.fromRGBO(0, 0, 0, 1),
                     fontSize: 22,
                     fontWeight: FontWeight.bold)),
           ),
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 indicatorSize: TabBarIndicatorSize.label,
                 indicatorColor: const Color.fromARGB(255, 255, 152, 114),
                 indicator: BoxDecoration(
-                    color: const Color.fromARGB(255, 0, 0, 0),
+                    color: const Color.fromRGBO(2, 27, 60, 1),
                     borderRadius: BorderRadius.circular(15)),
                 controller: tabController,
                 isScrollable: true,
@@ -161,7 +161,7 @@ class _ScanProductState extends State<ScanProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -186,7 +186,7 @@ class _ScanProductState extends State<ScanProduct> {
                         borderRadius: BorderRadius.circular(50.0),
                         // side: BorderSide(color: Colors.red)
                       ),
-                      backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
+                      backgroundColor: Color.fromRGBO(2, 27, 60, 1),
                     ),
                     child: const Text(
                       'CLICK TO SCAN',
@@ -283,7 +283,7 @@ class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+        backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
         body: ListView.builder(
           itemCount: products.length,
           itemBuilder: (context, index) {
@@ -349,7 +349,7 @@ class _CartState extends State<Cart> {
                 width: MediaQuery.of(context).size.width,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(36, 34, 921, 1),
+                  color: Color.fromRGBO(2, 27, 60, 1),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Center(
@@ -374,7 +374,7 @@ class _CartState extends State<Cart> {
                         borderRadius: BorderRadius.circular(10.0),
                         // side: BorderSide(color: Colors.red)
                       ),
-                      backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
+                      backgroundColor: Color.fromRGBO(2, 27, 60, 1),
                     ),
                     child: const Center(
                       child: Text(

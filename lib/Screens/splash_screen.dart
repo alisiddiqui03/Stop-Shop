@@ -7,34 +7,18 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromRGBO(251, 118, 44, 1),
       body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Image(
-              image: const AssetImage('assets/images/logo.png'),
+              image: const AssetImage('assets/images/stopshoplogo.png'),
               height: MediaQuery.of(context).size.width,
               width: MediaQuery.of(context).size.width),
         ]),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 45,
-              //color: const Color.fromRGBO(232, 234, 246, 1),
-              child: const Center(
-                child: Text('STOP & SHOP',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 26,
-                        color: Color.fromRGBO(36, 34, 921, 1))),
-              ),
-            )
-          ],
-        ),
+
         const SizedBox(
-          height: 150,
+          height: 100,
         ),
         // ignore: sized_box_for_whitespace
         Container(
@@ -46,10 +30,10 @@ class SplashScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(50.0),
                   // side: BorderSide(color: Colors.red)
                 ),
-                backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
+                backgroundColor: const Color.fromRGBO(2, 27, 60, 1),
               ),
               child: const Text(
-                'GET START',
+                'PROCEED',
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 20,

@@ -22,11 +22,12 @@ class _SignUpState extends State<SignUp> {
 
   late String password;
   late String confirmPassword;
+  bool _isObscured = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromRGBO(251, 118, 44, 1),
         body: Center(
             child: SingleChildScrollView(
                 child: Form(
@@ -86,8 +87,8 @@ class _SignUpState extends State<SignUp> {
             Container(
               padding: const EdgeInsets.all(10),
               child: TextFormField(
+                obscureText: _isObscured,
                 controller: passwordController,
-                obscureText: true,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter a password';
@@ -102,6 +103,15 @@ class _SignUpState extends State<SignUp> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     labelText: 'Enter Password',
+                    suffixIcon: IconButton(
+                        icon: Icon(
+                          _isObscured ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscured = !_isObscured;
+                          });
+                        }),
                     filled: true, //<-- SEE HERE
                     fillColor: Color.fromARGB(255, 255, 255, 255)),
               ),
@@ -119,7 +129,7 @@ class _SignUpState extends State<SignUp> {
                         borderRadius: BorderRadius.circular(50.0),
                         // side: BorderSide(color: Colors.red)
                       ),
-                      backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
+                      backgroundColor: Color.fromRGBO(2, 27, 60, 1),
                     ),
                     child: const Text(
                       'Register',
@@ -204,7 +214,7 @@ class _SignUpState extends State<SignUp> {
                     'Sign in',
                     style: TextStyle(
                         fontSize: 18,
-                        color: const Color.fromRGBO(36, 34, 921, 1),
+                        color: Color.fromARGB(255, 7, 6, 54),
                         fontWeight: FontWeight.w600),
                   ),
                   onPressed: () {

@@ -54,29 +54,24 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool _isObscured = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
       body: SingleChildScrollView(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           const SizedBox(height: 110),
-          const Text(
-            'Welcome Back!',
-            style: TextStyle(fontWeight: FontWeight.w900, fontSize: 25),
-          ),
-          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image(
-                  image: const AssetImage('assets/images/logo.png'),
-                  height: 210,
+                  image: const AssetImage('assets/images/stopshoplogo.png'),
+                  height: 220,
                   width: MediaQuery.of(context).size.width)
             ],
           ),
-          const SizedBox(height: 20),
           Container(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
@@ -96,11 +91,20 @@ class _LoginPageState extends State<LoginPage> {
             decoration: const BoxDecoration(),
             child: TextFormField(
               controller: passwordController,
-              obscureText: true,
+              obscureText: _isObscured,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(50),
                   ),
+                  suffixIcon: IconButton(
+                      icon: Icon(
+                        _isObscured ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isObscured = !_isObscured;
+                        });
+                      }),
                   labelText: 'Enter Password',
                   filled: true, //<-- SEE HERE
                   fillColor: Color.fromARGB(255, 255, 255, 255)),
@@ -123,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text(
                   'Forget Password?',
                   style: TextStyle(
-                      color: Color.fromRGBO(36, 34, 921, 1),
+                      color: Color.fromRGBO(11, 10, 41, 1),
                       fontWeight: FontWeight.w500),
                 ),
               ),
@@ -140,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(50.0),
                     // side: BorderSide(color: Colors.red)
                   ),
-                  backgroundColor: const Color.fromRGBO(36, 34, 921, 1),
+                  backgroundColor: Color.fromRGBO(2, 27, 60, 1),
                 ),
                 child: const Text(
                   'Login',
@@ -165,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                   'Sign up',
                   style: TextStyle(
                       fontSize: 18,
-                      color: Color.fromRGBO(36, 34, 921, 1),
+                      color: Color.fromRGBO(0, 0, 0, 1),
                       fontWeight: FontWeight.w600),
                 ),
                 onPressed: () {

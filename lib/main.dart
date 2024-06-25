@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stopshop/Screens/home_screen.dart';
 import 'package:stopshop/Screens/splash_screen.dart';
 import 'package:stopshop/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
