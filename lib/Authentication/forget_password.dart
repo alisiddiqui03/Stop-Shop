@@ -88,7 +88,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         color: Color.fromRGBO(0, 0, 0, 0.5), //<-- SEE HERE
                       ),
                       filled: true, //<-- SEE HERE
-                      fillColor: Color.fromARGB(255, 255, 255, 255)),
+                      fillColor: const Color.fromARGB(255, 255, 255, 255)),
                 ),
               ),
               Container(
@@ -102,7 +102,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           borderRadius: BorderRadius.circular(50.0),
                           // side: BorderSide(color: Colors.red)
                         ),
-                        backgroundColor: Color.fromRGBO(2, 27, 60, 1),
+                        backgroundColor: const Color.fromRGBO(2, 27, 60, 1),
                       ),
                       child: const Text(
                         'Submit',

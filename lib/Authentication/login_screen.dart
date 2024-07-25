@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   labelText: 'Enter Your Email',
                   filled: true, //<-- SEE HERE
-                  fillColor: Color.fromARGB(255, 255, 255, 255)),
+                  fillColor: const Color.fromARGB(255, 255, 255, 255)),
             ),
           ),
           const SizedBox(height: 15),
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                       }),
                   labelText: 'Enter Password',
                   filled: true, //<-- SEE HERE
-                  fillColor: Color.fromARGB(255, 255, 255, 255)),
+                  fillColor: const Color.fromARGB(255, 255, 255, 255)),
             ),
           ),
           const SizedBox(height: 15),
@@ -144,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(50.0),
                     // side: BorderSide(color: Colors.red)
                   ),
-                  backgroundColor: Color.fromRGBO(2, 27, 60, 1),
+                  backgroundColor: const Color.fromRGBO(2, 27, 60, 1),
                 ),
                 child: const Text(
                   'Login',

@@ -27,7 +27,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromRGBO(251, 118, 44, 1),
+        backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
         body: Center(
             child: SingleChildScrollView(
                 child: Form(
@@ -68,7 +68,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     labelText: 'Enter Your Full Name',
                     filled: true, //<-- SEE HERE
-                    fillColor: Color.fromARGB(255, 255, 255, 255)),
+                    fillColor: const Color.fromARGB(255, 255, 255, 255)),
               ),
             ),
             Container(
@@ -81,7 +81,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     labelText: 'Enter Your Email',
                     filled: true, //<-- SEE HERE
-                    fillColor: Color.fromARGB(255, 255, 255, 255)),
+                    fillColor: const Color.fromARGB(255, 255, 255, 255)),
               ),
             ),
             Container(
@@ -113,7 +113,7 @@ class _SignUpState extends State<SignUp> {
                           });
                         }),
                     filled: true, //<-- SEE HERE
-                    fillColor: Color.fromARGB(255, 255, 255, 255)),
+                    fillColor: const Color.fromARGB(255, 255, 255, 255)),
               ),
             ),
 
@@ -129,7 +129,7 @@ class _SignUpState extends State<SignUp> {
                         borderRadius: BorderRadius.circular(50.0),
                         // side: BorderSide(color: Colors.red)
                       ),
-                      backgroundColor: Color.fromRGBO(2, 27, 60, 1),
+                      backgroundColor: const Color.fromRGBO(2, 27, 60, 1),
                     ),
                     child: const Text(
                       'Register',

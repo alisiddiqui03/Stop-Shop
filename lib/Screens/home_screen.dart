@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 import 'package:stopshop/Screens/checkout_page.dart';
 
@@ -45,7 +43,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: Scaffold(
           backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
           appBar: AppBar(
-            iconTheme: IconThemeData(color: Color.fromRGBO(232, 234, 246, 1)),
+            iconTheme:
+                const IconThemeData(color: Color.fromRGBO(232, 234, 246, 1)),
             centerTitle: true,
             backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
             title: const Text('STOP & SHOP',
@@ -167,11 +166,8 @@ class _ScanProductState extends State<ScanProduct> {
         child: Center(
           child: Column(
             children: [
-              const SizedBox(height: 40),
-              Image.network(
-                "https://cdn-icons-png.flaticon.com/512/241/241528.png",
-                width: 300,
-                height: 300,
+              Image.asset(
+                "assets/images/scan.png",
               ),
               const SizedBox(
                 height: 100,
@@ -186,7 +182,7 @@ class _ScanProductState extends State<ScanProduct> {
                         borderRadius: BorderRadius.circular(50.0),
                         // side: BorderSide(color: Colors.red)
                       ),
-                      backgroundColor: Color.fromRGBO(2, 27, 60, 1),
+                      backgroundColor: const Color.fromRGBO(2, 27, 60, 1),
                     ),
                     child: const Text(
                       'CLICK TO SCAN',
@@ -293,7 +289,7 @@ class _CartState extends State<Cart> {
                 width: MediaQuery.of(context).size.width,
                 height: 90,
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(232, 234, 246, 1),
+                  color: const Color.fromRGBO(232, 234, 246, 1),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Padding(
@@ -304,22 +300,22 @@ class _CartState extends State<Cart> {
                         children: [
                           Text(
                             products[index].name,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromRGBO(36, 34, 921, 1)),
                           ),
                           Text(products[index].description,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16,
                                   color: Color.fromRGBO(36, 34, 921, 1))),
-                          Text("Price: \Rs${products[index].price}".toString(),
-                              style: TextStyle(
+                          Text("Price: Rs${products[index].price}".toString(),
+                              style: const TextStyle(
                                   fontSize: 17,
                                   color: Color.fromRGBO(36, 34, 921, 1))),
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       CounterApp(
                         initialValue: products[index].quantity,
                         onValueChanged: (value) {
@@ -328,10 +324,10 @@ class _CartState extends State<Cart> {
                           });
                         },
                       ),
-                      SizedBox(width: 15),
+                      const SizedBox(width: 15),
                       GestureDetector(
                         onTap: () => _deleteProduct(index),
-                        child: Icon(
+                        child: const Icon(
                           Icons.delete,
                           color: Colors.red,
                           size: 25,
@@ -349,13 +345,13 @@ class _CartState extends State<Cart> {
                 width: MediaQuery.of(context).size.width,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(2, 27, 60, 1),
+                  color: const Color.fromRGBO(2, 27, 60, 1),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Center(
                   child: Text(
                     'Total: \$${getTotalCost().toStringAsFixed(2)}',
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 20.0,
                         color: Color.fromRGBO(232, 234, 246, 1),
                         fontWeight: FontWeight.bold),
@@ -363,8 +359,9 @@ class _CartState extends State<Cart> {
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Expanded(
+              // ignore: sized_box_for_whitespace
               child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: 50,
@@ -374,7 +371,7 @@ class _CartState extends State<Cart> {
                         borderRadius: BorderRadius.circular(10.0),
                         // side: BorderSide(color: Colors.red)
                       ),
-                      backgroundColor: Color.fromRGBO(2, 27, 60, 1),
+                      backgroundColor: const Color.fromRGBO(2, 27, 60, 1),
                     ),
                     child: const Center(
                       child: Text(
@@ -400,6 +397,7 @@ class CounterApp extends StatefulWidget {
   final int initialValue;
   final ValueChanged<int> onValueChanged;
 
+  // ignore: use_super_parameters
   const CounterApp({
     Key? key,
     required this.initialValue,
@@ -407,6 +405,7 @@ class CounterApp extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _CounterAppState createState() => _CounterAppState();
 }
 
@@ -441,18 +440,18 @@ class _CounterAppState extends State<CounterApp> {
       children: [
         GestureDetector(
           onTap: _decrementCounter,
-          child: Icon(
+          child: const Icon(
             Icons.remove,
             size: 22,
           ),
         ),
         Text(
           '$_counter',
-          style: TextStyle(fontSize: 20.0),
+          style: const TextStyle(fontSize: 20.0),
         ),
         GestureDetector(
           onTap: _incrementCounter,
-          child: Icon(Icons.add, size: 22),
+          child: const Icon(Icons.add, size: 22),
         ),
       ],
     );
