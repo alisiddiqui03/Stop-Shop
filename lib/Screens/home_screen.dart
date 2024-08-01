@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:stopshop/Screens/billing_details.dart';
 import 'package:stopshop/Screens/checkout_page.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 2, vsync: this);
+    TabController tabController = TabController(length: 3, vsync: this);
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -98,51 +99,69 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
           body: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const SizedBox(height: 10),
-              TabBar(
-                labelColor: const Color.fromARGB(255, 255, 255, 255),
-                unselectedLabelColor: const Color.fromARGB(255, 0, 0, 0),
-                indicatorSize: TabBarIndicatorSize.label,
-                indicatorColor: const Color.fromARGB(255, 255, 152, 114),
-                indicator: BoxDecoration(
-                    color: const Color.fromRGBO(2, 27, 60, 1),
-                    borderRadius: BorderRadius.circular(15)),
-                controller: tabController,
-                isScrollable: true,
-                labelPadding:
-                    EdgeInsets.symmetric(horizontal: size.width * 0.06),
-                tabs: const [
-                  Tab(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        "Scan Product",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+            padding: const EdgeInsets.all(0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 55.0,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            topRight: Radius.circular(5),
+                            bottomLeft: Radius.circular(5),
+                            bottomRight: Radius.circular(5))),
+                    child: TabBar(
+                      labelColor: const Color.fromARGB(255, 255, 255, 255),
+                      unselectedLabelColor: const Color.fromARGB(255, 0, 0, 0),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicatorColor: const Color.fromARGB(255, 255, 152, 114),
+                      indicator: BoxDecoration(
+                        color: const Color.fromRGBO(2, 27, 60, 1),
+                        borderRadius: BorderRadius.circular(5),
                       ),
+                      controller: tabController,
+                      isScrollable: true,
+                      labelPadding:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                      tabs: const [
+                        Tab(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Icon(
+                              Icons.qr_code_scanner,
+                              size: 35,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Tab(
+                            child: Icon(Icons.shopping_cart_outlined, size: 35),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Tab(
+                            child: Icon(Icons.edit_document, size: 35),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Tab(
-                      child: Text(
-                        "Cart",
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: TabBarView(
+                ),
+                Expanded(
+                  child: TabBarView(
                     controller: tabController,
-                    children: const [ScanProduct(), Cart()]),
-              )
-            ]),
+                    children: const [ScanProduct(), Cart(), BillingDetail()],
+                  ),
+                ),
+              ],
+            ),
           )),
     );
   }
@@ -169,9 +188,7 @@ class _ScanProductState extends State<ScanProduct> {
               Image.asset(
                 "assets/images/scan.png",
               ),
-              const SizedBox(
-                height: 100,
-              ),
+              const SizedBox(height: 100),
               // ignore: sized_box_for_whitespace
               Container(
                   width: 318,
@@ -341,20 +358,23 @@ class _CartState extends State<Cart> {
         bottomNavigationBar: Row(
           children: [
             Expanded(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(2, 27, 60, 1),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Center(
-                  child: Text(
-                    'Total: \$${getTotalCost().toStringAsFixed(2)}',
-                    style: const TextStyle(
-                        fontSize: 20.0,
-                        color: Color.fromRGBO(232, 234, 246, 1),
-                        fontWeight: FontWeight.bold),
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(2, 27, 60, 1),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Total: \Rs${getTotalCost().toStringAsFixed(2)}',
+                      style: const TextStyle(
+                          fontSize: 17.0,
+                          color: Color.fromRGBO(232, 234, 246, 1),
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
@@ -362,31 +382,34 @@ class _CartState extends State<Cart> {
             const Spacer(),
             Expanded(
               // ignore: sized_box_for_whitespace
-              child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        // side: BorderSide(color: Colors.red)
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          // side: BorderSide(color: Colors.red)
+                        ),
+                        backgroundColor: const Color.fromRGBO(2, 27, 60, 1),
                       ),
-                      backgroundColor: const Color.fromRGBO(2, 27, 60, 1),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Checkout',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 17,
-                            color: Color.fromRGBO(232, 234, 246, 1)),
+                      child: const Center(
+                        child: Text(
+                          'Checkout',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 17,
+                              color: Color.fromRGBO(232, 234, 246, 1)),
+                        ),
                       ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const Checkout()));
-                    },
-                  )),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const Checkout()));
+                      },
+                    )),
+              ),
             ),
           ],
         ));

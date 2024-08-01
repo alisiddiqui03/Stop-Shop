@@ -33,30 +33,17 @@ class _SignUpState extends State<SignUp> {
                 child: Form(
           key: formKey,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Welcome Onboard!',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                )
-              ],
-            ),
-            const SizedBox(height: 10),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'STOP AND SHOP',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Color.fromRGBO(0, 0, 0, 0.72)),
-                )
+                Image(
+                    image: const AssetImage('assets/images/stopshoplogo.png'),
+                    height: 220,
+                    width: MediaQuery.of(context).size.width)
               ],
             ),
 
-            const Padding(padding: EdgeInsets.only(bottom: 30)),
+            //const Padding(padding: EdgeInsets.only(bottom: 30)),
 
             Container(
               padding: const EdgeInsets.all(10),
@@ -84,6 +71,8 @@ class _SignUpState extends State<SignUp> {
                     fillColor: const Color.fromARGB(255, 255, 255, 255)),
               ),
             ),
+            const SizedBox(height: 10),
+
             Container(
               padding: const EdgeInsets.all(10),
               child: TextFormField(
