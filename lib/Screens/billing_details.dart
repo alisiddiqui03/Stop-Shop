@@ -32,13 +32,16 @@ class _BillingDetailState extends State<BillingDetail> {
     final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          automaticallyImplyLeading: false,
           title: const Center(
-        child: Text(
-          'Billing Details',
-          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-        ),
-      )),
+            child: Text(
+              'Billing Details',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+          )),
       body: ListView.builder(
         itemCount: billingDetails.length,
         itemBuilder: (context, index) {
@@ -49,22 +52,23 @@ class _BillingDetailState extends State<BillingDetail> {
 
           return ListTile(
             title: Text(customerName,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             subtitle: Text.rich(
               TextSpan(
                 children: [
-                  TextSpan(
+                  const TextSpan(
                       text: 'Amount: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: '\$${amount.toStringAsFixed(2)}\n',
-                      style: TextStyle(fontWeight: FontWeight.normal)),
-                  TextSpan(
+                      style: const TextStyle(fontWeight: FontWeight.normal)),
+                  const TextSpan(
                       text: 'Date: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
                       text: dateFormat.format(date),
-                      style: TextStyle(fontWeight: FontWeight.normal)),
+                      style: const TextStyle(fontWeight: FontWeight.normal)),
                 ],
               ),
             ),

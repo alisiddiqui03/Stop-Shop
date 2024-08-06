@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:stopshop/Authentication/signup_screen.dart';
 import 'package:stopshop/Screens/billing_details.dart';
 import 'package:stopshop/Screens/checkout_page.dart';
 
@@ -38,83 +39,82 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 3, vsync: this);
+    TabController tabController = TabController(length: 4, vsync: this);
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
           backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
-          appBar: AppBar(
-            iconTheme:
-                const IconThemeData(color: Color.fromRGBO(232, 234, 246, 1)),
-            centerTitle: true,
-            backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
-            title: const Text('STOP & SHOP',
-                style: TextStyle(
-                    color: Color.fromRGBO(0, 0, 0, 1),
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold)),
-          ),
-          drawer: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                UserAccountsDrawerHeader(
-                  accountName: Text(
-                    "Hello, $name",
-                    style: const TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  currentAccountPicture: const CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://cdn3.iconfinder.com/data/icons/essential-rounded/64/Rounded-31-512.png"),
-                    backgroundColor: Colors.white,
-                  ),
-                  accountEmail: null,
-                ),
-                // Add other drawer items here
-                ListTile(
-                  leading: const Icon(Icons.qr_code),
-                  title: const Text('Scan'),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.shopping_basket),
-                  title: const Text('Cart'),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()),
-                    );
-                  },
-                ),
-                // Add more list tiles as needed
-              ],
-            ),
-          ),
+          // appBar: AppBar(
+          //   automaticallyImplyLeading: false,
+          //   iconTheme:
+          //       const IconThemeData(color: Color.fromRGBO(232, 234, 246, 1)),
+          //   centerTitle: true,
+          //   backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
+          //   title: const Text('STOP & SHOP',
+          //       style: TextStyle(
+          //           color: Color.fromRGBO(0, 0, 0, 1),
+          //           fontSize: 22,
+          //           fontWeight: FontWeight.bold)),
+          // ),
+          // drawer: Drawer(
+          //   child: ListView(
+          //     padding: EdgeInsets.zero,
+          //     children: <Widget>[
+          //       UserAccountsDrawerHeader(
+          //         accountName: Text(
+          //           "Hello, $name",
+          //           style: const TextStyle(
+          //               color: Color.fromARGB(255, 255, 255, 255),
+          //               fontSize: 17,
+          //               fontWeight: FontWeight.bold),
+          //         ),
+          //         currentAccountPicture: const CircleAvatar(
+          //           backgroundImage: NetworkImage(
+          //               "https://cdn3.iconfinder.com/data/icons/essential-rounded/64/Rounded-31-512.png"),
+          //           backgroundColor: Colors.white,
+          //         ),
+          //         accountEmail: null,
+          //       ),
+          //       // Add other drawer items here
+          //       ListTile(
+          //         leading: const Icon(Icons.qr_code),
+          //         title: const Text('Scan'),
+          //         onTap: () {
+          //           Navigator.of(context).push(
+          //             MaterialPageRoute(
+          //                 builder: (context) => const HomeScreen()),
+          //           );
+          //         },
+          //       ),
+          //       ListTile(
+          //         leading: const Icon(Icons.shopping_basket),
+          //         title: const Text('Cart'),
+          //         onTap: () {
+          //           Navigator.of(context).push(
+          //             MaterialPageRoute(
+          //                 builder: (context) => const HomeScreen()),
+          //           );
+          //         },
+          //       ),
+          //       // Add more list tiles as needed
+          //     ],
+          //   ),
+          // ),
           body: Padding(
             padding: const EdgeInsets.all(0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Container(
-                    width: double.infinity,
-                    height: 55.0,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(5),
-                            topRight: Radius.circular(5),
-                            bottomLeft: Radius.circular(5),
-                            bottomRight: Radius.circular(5))),
+                Container(
+                  width: double.infinity,
+                  height: 70.0,
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5),
                     child: TabBar(
                       labelColor: const Color.fromARGB(255, 255, 255, 255),
                       unselectedLabelColor: const Color.fromARGB(255, 0, 0, 0),
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       controller: tabController,
-                      isScrollable: true,
+                      isScrollable: false,
                       labelPadding:
                           EdgeInsets.symmetric(horizontal: size.width * 0.05),
                       tabs: const [
@@ -150,6 +150,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             child: Icon(Icons.edit_document, size: 35),
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Tab(
+                            child: Icon(Icons.person, size: 35),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -157,7 +163,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Expanded(
                   child: TabBarView(
                     controller: tabController,
-                    children: const [ScanProduct(), Cart(), BillingDetail()],
+                    children: [
+                      ScanProduct(),
+                      Cart(),
+                      BillingDetail(),
+                      ProfilePage()
+                    ],
                   ),
                 ),
               ],
@@ -369,7 +380,7 @@ class _CartState extends State<Cart> {
                   ),
                   child: Center(
                     child: Text(
-                      'Total: \Rs${getTotalCost().toStringAsFixed(2)}',
+                      'Total: Rs${getTotalCost().toStringAsFixed(2)}',
                       style: const TextStyle(
                           fontSize: 17.0,
                           color: Color.fromRGBO(232, 234, 246, 1),
@@ -384,6 +395,7 @@ class _CartState extends State<Cart> {
               // ignore: sized_box_for_whitespace
               child: Padding(
                 padding: const EdgeInsets.all(2.0),
+                // ignore: sized_box_for_whitespace
                 child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: 50,
@@ -477,6 +489,104 @@ class _CounterAppState extends State<CounterApp> {
           child: const Icon(Icons.add, size: 22),
         ),
       ],
+    );
+  }
+}
+
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String name = "Name Loading";
+
+  @override
+  void initState() {
+    super.initState();
+    getName();
+  }
+
+  void getName() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    var getName = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get();
+    setState(() {
+      name = getName.data()!['name'];
+    });
+  }
+
+  void logout() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const SignUp()),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(16.0),
+            child: Row(
+              children: <Widget>[
+                const CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      "https://cdn3.iconfinder.com/data/icons/essential-rounded/64/Rounded-31-512.png"),
+                  backgroundColor: Colors.white,
+                  radius: 30.0,
+                ),
+                SizedBox(width: 16.0),
+                Text(
+                  "Hello, $name",
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 0, 0, 0),
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.qr_code),
+            title: const Text('Scan'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.shopping_basket),
+            title: const Text('Cart'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.edit_document),
+            title: const Text('Billing'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('Logout'),
+            onTap: logout,
+          ),
+        ],
+      ),
     );
   }
 }
