@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:stopshop/Authentication/signup_screen.dart';
 import 'package:stopshop/Screens/billing_details.dart';
 import 'package:stopshop/Screens/checkout_page.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
+import 'package:stopshop/Screens/profile_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -165,10 +165,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   child: TabBarView(
                     controller: tabController,
                     children: [
-                      ScanProduct(),
+                      const ScanProduct(),
                       Cart(),
                       BillingDetail(),
-                      ProfilePage()
+                      ProfilePage(tabController: tabController)
                     ],
                   ),
                 ),
@@ -192,31 +192,69 @@ class _ScanProductState extends State<ScanProduct> {
   // Check for camera permissions and open scanner
   Future<void> checkCameraPermission(BuildContext context) async {
     if (await Permission.camera.request().isGranted) {
-      // If permission is granted, start scanning
       scanBarcode();
     } else {
-      // Handle permission denial
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Camera permission is not granted')),
       );
     }
   }
 
-  // Scan barcode and handle the result
   Future<void> scanBarcode() async {
     try {
       var scanResult = await BarcodeScanner.scan();
+      String scannedBarcode = scanResult.rawContent;
+
       setState(() {
-        result = scanResult.rawContent.isEmpty
+        result = scannedBarcode.isEmpty
             ? 'Failed to get the scan result'
-            : scanResult.rawContent;
+            : scannedBarcode;
       });
-      print("Scanned Result: $result");
+
+      // Check if the scanned barcode exists in Firebase
+      if (scannedBarcode.isNotEmpty) {
+        checkBarcodeInFirebase(scannedBarcode);
+      }
     } catch (e) {
       setState(() {
         result = 'Error occurred while scanning: $e';
       });
     }
+  }
+
+  // Check if barcode exists in Firebase
+  Future<void> checkBarcodeInFirebase(String barcode) async {
+    try {
+      var productSnapshot = await FirebaseFirestore.instance
+          .collection('products')
+          .where('product_Barcode', isEqualTo: barcode)
+          .get();
+
+      if (productSnapshot.docs.isNotEmpty) {
+        var productData = productSnapshot.docs.first.data();
+        print('product is added$productData');
+        addProductToCart(productData);
+      } else {
+        // If product does not exist
+
+        setState(() {
+          setState(() {
+            result = 'Product not found';
+          });
+          ;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        result = 'Error checking barcode: $e';
+      });
+    }
+  }
+
+  void addProductToCart(Map<String, dynamic> productData) {
+    setState(() {
+      result = 'Product added to cart: ${productData['produnct_Name']}';
+    });
   }
 
   @override
@@ -233,6 +271,7 @@ class _ScanProductState extends State<ScanProduct> {
                 "assets/images/scan.png",
               ),
               const SizedBox(height: 100),
+              // ignore: sized_box_for_whitespace
               Container(
                 width: 318,
                 height: 59,
@@ -454,12 +493,11 @@ class CounterApp extends StatefulWidget {
   final int initialValue;
   final ValueChanged<int> onValueChanged;
 
-  // ignore: use_super_parameters
   const CounterApp({
-    Key? key,
+    super.key,
     required this.initialValue,
     required this.onValueChanged,
-  }) : super(key: key);
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -511,104 +549,6 @@ class _CounterAppState extends State<CounterApp> {
           child: const Icon(Icons.add, size: 22),
         ),
       ],
-    );
-  }
-}
-
-class ProfilePage extends StatefulWidget {
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  String name = "Name Loading";
-
-  @override
-  void initState() {
-    super.initState();
-    getName();
-  }
-
-  void getName() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    var getName = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get();
-    setState(() {
-      name = getName.data()!['name'];
-    });
-  }
-
-  void logout() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const SignUp()),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(16.0),
-            child: Row(
-              children: <Widget>[
-                const CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://cdn3.iconfinder.com/data/icons/essential-rounded/64/Rounded-31-512.png"),
-                  backgroundColor: Colors.white,
-                  radius: 30.0,
-                ),
-                SizedBox(width: 16.0),
-                Text(
-                  "Hello, $name",
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.qr_code),
-            title: const Text('Scan'),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.shopping_basket),
-            title: const Text('Cart'),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.edit_document),
-            title: const Text('Billing'),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
-            onTap: logout,
-          ),
-        ],
-      ),
     );
   }
 }
