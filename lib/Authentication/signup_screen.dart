@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stopshop/Authentication/login_screen.dart';
 
@@ -134,10 +133,10 @@ class _SignUpState extends State<SignUp> {
                       if (nameController.text.isEmpty ||
                           emailController.text.isEmpty ||
                           passwordController.text.isEmpty) {
-                        Fluttertoast.showToast(
-                          msg: "Please fill in all the required fields.",
-                          toastLength: Toast.LENGTH_SHORT,
-                        );
+                        // Fluttertoast.showToast(
+                        //   msg: "Please fill in all the required fields.",
+                        //   toastLength: Toast.LENGTH_SHORT,
+                        // );
                         return; // Return without proceeding further
                       }
 
@@ -166,10 +165,10 @@ class _SignUpState extends State<SignUp> {
                         });
 
                         // Display success message
-                        Fluttertoast.showToast(
-                          msg: "Signup successful. Please verify your email.",
-                          toastLength: Toast.LENGTH_SHORT,
-                        );
+                        // Fluttertoast.showToast(
+                        //   msg: "Signup successful. Please verify your email.",
+                        //   toastLength: Toast.LENGTH_SHORT,
+                        // );
 
                         // Clear text fields
                         nameController.clear();
@@ -183,10 +182,10 @@ class _SignUpState extends State<SignUp> {
                         );
                       } catch (e) {
                         // Display error message
-                        Fluttertoast.showToast(
-                          msg: "Signup failed: $e",
-                          toastLength: Toast.LENGTH_SHORT,
-                        );
+                        // Fluttertoast.showToast(
+                        //   msg: "Signup failed: $e",
+                        //   toastLength: Toast.LENGTH_SHORT,
+                        // );
 
                         // Clear text fields
                         nameController.clear();

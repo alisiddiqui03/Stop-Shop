@@ -32,9 +32,9 @@ class _BillingDetailState extends State<BillingDetail> {
     final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
           automaticallyImplyLeading: false,
           title: const Center(
             child: Text(

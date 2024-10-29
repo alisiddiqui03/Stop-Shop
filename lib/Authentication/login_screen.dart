@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stopshop/Authentication/forget_password.dart';
 import 'package:stopshop/Authentication/signup_screen.dart';
 import 'package:stopshop/Screens/home_screen.dart';
@@ -27,19 +26,19 @@ void loginUser(BuildContext context, String email, String password) async {
     } else {
       // If email is not verified, sign out user and show error message
       await auth.signOut();
-      Fluttertoast.showToast(
-        msg: "Please verify your email before logging in.",
-        toastLength: Toast.LENGTH_SHORT,
-      );
+      // Fluttertoast.showToast(
+      //   msg: "Please verify your email before logging in.",
+      //   toastLength: Toast.LENGTH_SHORT,
+      // );
     }
   } catch (e) {
     // Handle login errors
     // ignore: avoid_print
     print('Login failed: $e');
-    Fluttertoast.showToast(
-      msg: "Login failed. Please check your email and password.",
-      toastLength: Toast.LENGTH_SHORT,
-    );
+    // Fluttertoast.showToast(
+    //   msg: "Login failed. Please check your email and password.",
+    //   toastLength: Toast.LENGTH_SHORT,
+    // );
   }
 }
 

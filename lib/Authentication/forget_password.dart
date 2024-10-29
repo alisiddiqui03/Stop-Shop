@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stopshop/Authentication/login_screen.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -116,17 +115,17 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             .sendPasswordResetEmail(
                                 email: emailController.text.toString())
                             .then((value) {
-                          Fluttertoast.showToast(
-                            msg:
-                                "We have sent you email to recover password, please check email",
-                            toastLength: Toast.LENGTH_SHORT,
-                          );
+                          // Fluttertoast.showToast(
+                          //   msg:
+                          //       "We have sent you email to recover password, please check email",
+                          //   toastLength: Toast.LENGTH_SHORT,
+                          // );
                           emailController.clear();
                         }).onError((error, stackTrace) {
-                          Fluttertoast.showToast(
-                            msg: (error.toString()),
-                            toastLength: Toast.LENGTH_SHORT,
-                          );
+                          // Fluttertoast.showToast(
+                          //   msg: (error.toString()),
+                          //   toastLength: Toast.LENGTH_SHORT,
+                          // );
                         });
                       })),
               const SizedBox(height: 20),
