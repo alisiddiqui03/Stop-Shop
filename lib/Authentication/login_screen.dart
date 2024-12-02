@@ -4,43 +4,58 @@ import 'package:stopshop/Authentication/forget_password.dart';
 import 'package:stopshop/Authentication/signup_screen.dart';
 import 'package:stopshop/Screens/home_screen.dart';
 
+FirebaseAuth auth = FirebaseAuth.instance;
+
 // Login Function
-void loginUser(BuildContext context, String email, String password) async {
-  FirebaseAuth auth = FirebaseAuth.instance;
-
+void login(String email, String password, context) async {
   try {
-    // Sign in user with email and password
-    UserCredential userCredential = await auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeScreen()),
     );
-
-    // Check if email is verified
-    if (userCredential.user!.emailVerified) {
-      // Navigate to Home Page or Dashboard after successful login
-      Navigator.push(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-    } else {
-      // If email is not verified, sign out user and show error message
-      await auth.signOut();
-      // Fluttertoast.showToast(
-      //   msg: "Please verify your email before logging in.",
-      //   toastLength: Toast.LENGTH_SHORT,
-      // );
-    }
+    print('Logged in as: ${userCredential.user?.email}');
+    // Navigate to the home screen
   } catch (e) {
-    // Handle login errors
-    // ignore: avoid_print
-    print('Login failed: $e');
-    // Fluttertoast.showToast(
-    //   msg: "Login failed. Please check your email and password.",
-    //   toastLength: Toast.LENGTH_SHORT,
-    // );
+    print('Login error: $e');
   }
 }
+
+// void loginUser(BuildContext context, String email, String password) async {
+//   try {
+//     // Sign in user with email and password
+//     UserCredential userCredential = await auth.signInWithEmailAndPassword(
+//       email: email,
+//       password: password,
+//     );
+
+//     // Check if email is verified
+//     if (userCredential.user!.emailVerified) {
+//       // Navigate to Home Page or Dashboard after successful login
+//       Navigator.push(
+//         // ignore: use_build_context_synchronously
+//         context,
+//         MaterialPageRoute(builder: (context) => const HomeScreen()),
+//       );
+//     } else {
+//       // If email is not verified, sign out user and show error message
+//       await auth.signOut();
+//       // Fluttertoast.showToast(
+//       //   msg: "Please verify your email before logging in.",
+//       //   toastLength: Toast.LENGTH_SHORT,
+//       // );
+//     }
+//   } catch (e) {
+//     // Handle login errors
+//     // ignore: avoid_print
+//     print('Login failed: $e');
+//     // Fluttertoast.showToast(
+//     //   msg: "Login failed. Please check your email and password.",
+//     //   toastLength: Toast.LENGTH_SHORT,
+//     // );
+//   }
+// }
 
 // Login Page
 // ignore: use_key_in_widget_constructors
@@ -155,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   String email = emailController.text.trim();
                   String password = passwordController.text.trim();
-                  loginUser(context, email, password);
+                  login(email, password, context);
                 },
               )),
           const SizedBox(height: 13.0),

@@ -49,14 +49,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }).toList();
     DocumentReference userDoc =
         FirebaseFirestore.instance.collection('users').doc(user.uid);
-    await userDoc.update(
-        {'cartItems': cartItems, 'updatedAt': FieldValue.serverTimestamp()});
+    await userDoc.set(
+      {'cartItems': cartItems, 'updatedAt': FieldValue.serverTimestamp()},
+      SetOptions(merge: true),
+    );
     // Save cart data under user's document
-    await _firestore.collection('carts').doc(user.uid).set({
-      'cartItems': cartItems,
-      'updatedAt':
-          FieldValue.serverTimestamp(), // Optional: to track last update time
-    });
+    await _firestore.collection('carts').doc(user.uid).set(
+      {
+        'cartItems': cartItems,
+        'updatedAt': FieldValue.serverTimestamp(),
+      },
+      SetOptions(merge: true),
+    );
   }
 
   @override
@@ -72,62 +76,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return SafeArea(
       child: Scaffold(
           backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
-          // appBar: AppBar(
-          //   automaticallyImplyLeading: false,
-          //   iconTheme:
-          //       const IconThemeData(color: Color.fromRGBO(232, 234, 246, 1)),
-          //   centerTitle: true,
-          //   backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
-          //   title: const Text('STOP & SHOP',
-          //       style: TextStyle(
-          //           color: Color.fromRGBO(0, 0, 0, 1),
-          //           fontSize: 22,
-          //           fontWeight: FontWeight.bold)),
-          // ),
-          // drawer: Drawer(
-          //   child: ListView(
-          //     padding: EdgeInsets.zero,
-          //     children: <Widget>[
-          //       UserAccountsDrawerHeader(
-          //         accountName: Text(
-          //           "Hello, $name",
-          //           style: const TextStyle(
-          //               color: Color.fromARGB(255, 255, 255, 255),
-          //               fontSize: 17,
-          //               fontWeight: FontWeight.bold),
-          //         ),
-          //         currentAccountPicture: const CircleAvatar(
-          //           backgroundImage: NetworkImage(
-          //               "https://cdn3.iconfinder.com/data/icons/essential-rounded/64/Rounded-31-512.png"),
-          //           backgroundColor: Colors.white,
-          //         ),
-          //         accountEmail: null,
-          //       ),
-          //       // Add other drawer items here
-          //       ListTile(
-          //         leading: const Icon(Icons.qr_code),
-          //         title: const Text('Scan'),
-          //         onTap: () {
-          //           Navigator.of(context).push(
-          //             MaterialPageRoute(
-          //                 builder: (context) => const HomeScreen()),
-          //           );
-          //         },
-          //       ),
-          //       ListTile(
-          //         leading: const Icon(Icons.shopping_basket),
-          //         title: const Text('Cart'),
-          //         onTap: () {
-          //           Navigator.of(context).push(
-          //             MaterialPageRoute(
-          //                 builder: (context) => const HomeScreen()),
-          //           );
-          //         },
-          //       ),
-          //       // Add more list tiles as needed
-          //     ],
-          //   ),
-          // ),
           body: Padding(
             padding: const EdgeInsets.all(0),
             child: Column(
@@ -201,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       Cart(
                         scannedProducts: scannedProducts,
                       ),
-                      const BillingDetail(),
+                      BillingDetail(),
                       ProfilePage(
                         tabController: tabController,
                       )

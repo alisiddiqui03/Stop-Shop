@@ -6,26 +6,95 @@ import 'package:stopshop/const.dart';
 import 'package:stopshop/main.dart';
 
 class StripeService {
-  Future<void> makePayment(BuildContext context, String amount) async {
+  Future<bool> makePayment(BuildContext context, String amount) async {
     try {
       // Step 1: Create Payment Intent with dynamic amount
-      paymentIntent = await createPaymentIntent(amount, 'PKR');
+      final paymentIntent = await createPaymentIntent(amount, 'PKR');
 
-      //STEP 2: Initialize Payment Sheet
-      await Stripe.instance
-          .initPaymentSheet(
-              paymentSheetParameters: SetupPaymentSheetParameters(
-                  paymentIntentClientSecret: paymentIntent!['client_secret'],
-                  style: ThemeMode.light,
-                  merchantDisplayName: 'Ikay'))
-          .then((value) {});
+      if (paymentIntent == null) {
+        print('Failed to create payment intent');
+        return false;
+      }
 
-      //STEP 3: Display Payment sheet
-      displayPaymentSheet(context);
+      // Step 2: Initialize Payment Sheet
+      await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+              paymentIntentClientSecret: paymentIntent['client_secret'],
+              style: ThemeMode.light,
+              merchantDisplayName: 'Ikay'));
+
+      // Step 3: Display Payment Sheet
+      try {
+        // Explicitly present the payment sheet
+        await Stripe.instance.presentPaymentSheet();
+
+        // If we reach this point without an exception, payment was successful
+        print('Payment Successful');
+
+        // Optional: Show success dialog
+        await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.check_circle, color: Colors.green, size: 100.0),
+                SizedBox(height: 10.0),
+                Text("Payment Successful!"),
+              ],
+            ),
+          ),
+        );
+
+        return true;
+      } on StripeException catch (e) {
+        // Handle Stripe-specific exceptions
+        print('Stripe Payment Error: ${e.error.message}');
+
+        // Optional: Show error dialog
+        await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.cancel, color: Colors.red, size: 100.0),
+                SizedBox(height: 10.0),
+                Text("Payment Failed: ${e.error.message}"),
+              ],
+            ),
+          ),
+        );
+
+        return false;
+      }
     } catch (err) {
-      throw Exception(err);
+      // Catch any other unexpected errors
+      print('Unexpected Payment Error: $err');
+      return false;
     }
   }
+
+  // Future<bool> makePayment(BuildContext context, String amount) async {
+  //   try {
+  //     // Step 1: Create Payment Intent with dynamic amount
+  //     paymentIntent = await createPaymentIntent(amount, 'PKR');
+
+  //     //STEP 2: Initialize Payment Sheet
+  //     await Stripe.instance
+  //         .initPaymentSheet(
+  //             paymentSheetParameters: SetupPaymentSheetParameters(
+  //                 paymentIntentClientSecret: paymentIntent!['client_secret'],
+  //                 style: ThemeMode.light,
+  //                 merchantDisplayName: 'Ikay'))
+  //         .then((value) {});
+
+  //     //STEP 3: Display Payment sheet
+  //     return displayPaymentSheet(context);
+  //   } catch (err) {
+  //     return false;
+  //   }
+  // }
 
   Future<Map<String, dynamic>?> createPaymentIntent(
       String amount, String currency) async {
@@ -61,50 +130,55 @@ class StripeService {
     }
   }
 
-  displayPaymentSheet(BuildContext context) async {
+  Future<bool> displayPaymentSheet(BuildContext context) async {
     try {
-      await Stripe.instance.presentPaymentSheet().then((value) {
-        showDialog(
-            context: context,
-            builder: (_) => const AlertDialog(
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.check_circle,
-                        color: Colors.green,
-                        size: 100.0,
-                      ),
-                      SizedBox(height: 10.0),
-                      Text("Payment Successful!"),
-                    ],
-                  ),
-                ));
+      // Present the payment sheet
+      await Stripe.instance.presentPaymentSheet();
 
-        paymentIntent = null;
-      }).onError((error, stackTrace) {
-        throw Exception(error);
-      });
-    } on StripeException catch (e) {
-      print('Error is:---> $e');
-      const AlertDialog(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.cancel,
-                  color: Colors.red,
-                ),
-                Text("Payment Failed"),
-              ],
-            ),
-          ],
+      // Show success dialog
+      showDialog(
+        context: context,
+        builder: (_) => const AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 100.0,
+              ),
+              SizedBox(height: 10.0),
+              Text("Payment Successful!"),
+            ],
+          ),
         ),
       );
+
+      paymentIntent = null; // Clear payment intent
+      return true; // Indicate payment success
+    } on StripeException catch (e) {
+      print('StripeException: $e');
+      showDialog(
+        context: context,
+        builder: (_) => const AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.cancel,
+                color: Colors.red,
+                size: 100.0,
+              ),
+              SizedBox(height: 10.0),
+              Text("Payment Failed!"),
+            ],
+          ),
+        ),
+      );
+      return false; // Indicate payment failure
     } catch (e) {
-      print('$e');
+      print('Exception: $e');
+      return false; // Handle unexpected errors
     }
   }
 }
