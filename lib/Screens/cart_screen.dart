@@ -29,17 +29,13 @@ class _CartState extends State<Cart> {
   Future<void> uploadPaymentData(
       List<Product> cartItems, double totalCost) async {
     User? user = FirebaseAuth.instance.currentUser;
-
     if (user != null) {
       try {
-        // Prepare the payment data
         final paymentData = {
-          'amount': totalCost, // Total amount paid
-          'currency': 'Rs', // Currency of the transaction
-          'date':
-              DateTime.now().toIso8601String(), // Timestamp in ISO 8601 format
-          'status':
-              'success', // You can change this depending on the payment status
+          'amount': totalCost,
+          'currency': 'Rs',
+          'date': DateTime.now().toIso8601String(),
+          'status': 'success',
           'items': cartItems.map((product) {
             return {
               'name': product.name,
@@ -49,17 +45,24 @@ class _CartState extends State<Cart> {
           }).toList(),
         };
 
-        // Upload to Firestore under the user's document
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid) // Get the user's document by UID
-            .set({
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'payments': FieldValue.arrayUnion([paymentData]),
         }, SetOptions(merge: true));
 
-        // Optionally, clear the cart after successful payment
-        cartItems.clear();
-        print("Payment data uploaded successfully!");
+        // Clear the cart in Firebase
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({
+          'cartItems': FieldValue.delete(),
+        });
+
+        // Clear the local cart list
+        setState(() {
+          cartItems.clear();
+        });
+
+        print("Payment data uploaded and cart cleared!");
       } catch (e) {
         print("Error uploading payment data: $e");
       }
@@ -86,7 +89,7 @@ class _CartState extends State<Cart> {
                 name: item['name'],
                 price: item['price'],
                 description: item['description'],
-                quantity: item['quantity'] ?? 1,
+                quantity: item['quantity'], // Default to 1 if quantity is null
               );
             }).toList();
           }
@@ -322,6 +325,69 @@ class _CartState extends State<Cart> {
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Done Button
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          User? user = FirebaseAuth.instance.currentUser;
+
+                          if (user != null) {
+                            // Delete cartItems from Firebase
+                            await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user.uid)
+                                .update({'cartItems': FieldValue.delete()});
+
+                            // Clear the local cartItems list
+                            setState(() {
+                              cartItems.clear();
+                            });
+
+                            // Close the dialog
+                            Navigator.of(context).pop();
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Cart cleared successfully!"),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("No user logged in."),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Error clearing cart: $e"),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                      ),
+                      child: const Text(
+                        'Done',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),

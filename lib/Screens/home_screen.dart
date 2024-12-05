@@ -53,14 +53,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       {'cartItems': cartItems, 'updatedAt': FieldValue.serverTimestamp()},
       SetOptions(merge: true),
     );
-    // Save cart data under user's document
-    await _firestore.collection('carts').doc(user.uid).set(
-      {
-        'cartItems': cartItems,
-        'updatedAt': FieldValue.serverTimestamp(),
-      },
-      SetOptions(merge: true),
-    );
   }
 
   @override

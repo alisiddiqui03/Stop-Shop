@@ -1,5 +1,6 @@
 import 'package:barcode_scan2/platform_wrapper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stopshop/Screens/home_screen.dart';
@@ -36,9 +37,7 @@ class _ScanProductState extends State<ScanProduct> {
       String scannedBarcode = scanResult.rawContent;
 
       setState(() {
-        result = scannedBarcode.isEmpty
-            ? 'Failed to get the scan result'
-            : scannedBarcode;
+        result = scannedBarcode.isEmpty ? 'Failed to get the scan result' : '';
       });
       print("Scanned Result: $result");
       if (scannedBarcode.isNotEmpty) {
@@ -53,6 +52,16 @@ class _ScanProductState extends State<ScanProduct> {
 
   Future<void> checkBarcodeInFirebase(String barcode) async {
     try {
+      // Get current user
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No user logged in')),
+        );
+        return;
+      }
+
+      // Check if product exists in products collection
       var productSnapshot = await FirebaseFirestore.instance
           .collection('products')
           .where('product_Barcode', isEqualTo: barcode)
@@ -60,34 +69,74 @@ class _ScanProductState extends State<ScanProduct> {
 
       if (productSnapshot.docs.isNotEmpty) {
         var productData = productSnapshot.docs.first.data();
-        var scannedProduct = Product(
-          name: productData['produnct_Name'],
-          price: productData['product_Price'],
-          description: productData['product_Description'],
-        );
 
-        widget.onProductScanned(scannedProduct);
-        // widget.onProductScanned(scannedProduct);
-      }
+        // Check user's cart to prevent duplicate products
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
 
-      // else if (productSnapshot.docs.isEmpty) {
-      //   var scannedProductdummy = Product(
-      //     name: 'surf excel',
-      //     price: '340',
-      //     description: 'dhshshshshshsh',
-      //   );
-      //   widget.onProductScanned(scannedProductdummy);
-      // }
+        bool productAlreadyInCart = false;
+        if (userDoc.exists) {
+          var userData = userDoc.data() as Map<String, dynamic>?;
+          var cartItems = userData?['cartItems'] as List?;
 
-      else {
+          if (cartItems != null) {
+            productAlreadyInCart = cartItems
+                .any((item) => item['name'] == productData['produnct_Name']);
+          }
+        }
+
+        if (productAlreadyInCart) {
+          // Show snackbar if product is already in cart
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Center(
+                child: Text(
+                    '${productData['produnct_Name']} is already in your cart'),
+              ),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        } else {
+          // Create and add product if not in cart
+          var scannedProduct = Product(
+            name: productData['produnct_Name'],
+            price: productData['product_Price'],
+            description: productData['product_Description'],
+          );
+
+          widget.onProductScanned(scannedProduct);
+
+          setState(() {
+            result = 'Product added to cart';
+          });
+        }
+      } else {
         setState(() {
-          result = 'Product not found';
+          result = 'Product not found in database';
         });
+
+        // Show snackbar for product not found
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Product not found in database'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } catch (e) {
       setState(() {
         result = 'Error checking barcode: $e';
       });
+
+      // Show error snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error checking barcode: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 

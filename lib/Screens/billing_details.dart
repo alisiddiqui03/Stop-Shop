@@ -65,7 +65,7 @@ class _BillingDetailState extends State<BillingDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat dateTimeFormat = DateFormat('HH:mm:ss   dd-MM-yyyy');
+    final DateFormat dateTimeFormat = DateFormat('dd-MM-yyyy   HH:mm:ss');
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(251, 118, 44, 1),
